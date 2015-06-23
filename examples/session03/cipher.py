@@ -2,7 +2,10 @@ import random
 
 alphabet = "abcdefghijklmnopqrstuvwxyz "
 
-cipher_list = list(alphabet)
+alphabet_list = list(alphabet)
+
+# Create a new copy of alphabet list
+cipher_list = list(alphabet_list)
 
 # This should be a list in order
 print(cipher_list)
@@ -23,13 +26,3 @@ for x in message_text:
 
 # This is what
 print(cipher_text)
-
-#new_cipher_text = "eqzergqtgvtqeqgvlqrfwaqa hgecvlvrqpeigtq fz"
-decrypt_text = ""
-
-for y in new_cipher_text:
-    index = cipher_list.index(y)
-    decrypt_char = alphabet_list[index]
-    decrypt_text += decrypt_char
-
-print decrypt_text
