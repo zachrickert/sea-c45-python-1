@@ -2,7 +2,7 @@ from subprocess import Popen, PIPE, STDOUT, TimeoutExpired
 
 
 def process(input):
-    p = Popen(['python', './mailroom.py'],
+    p = Popen(['python3', './mailroom.py'],
               stdout=PIPE,
               stdin=PIPE,
               stderr=STDOUT)
