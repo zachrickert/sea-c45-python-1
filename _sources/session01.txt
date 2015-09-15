@@ -43,17 +43,11 @@ Your TAs
 
 .. rst-class:: center large
 
-| Henry Howes
-| @henrykh
+| Grace Hatamyar
+| @ghatamyar
 
-| Joel Stanner
-| @joelstanner
-
-| Denise Barnes
-| @finddeniseonline
-
-| Jeff Mendiola
-| @jwmendio
+| Crystal Stellwagen
+| @liraeldianne
 
 
 How This Fits into CodeFellows
@@ -70,7 +64,8 @@ This Class
 
 Where to Go From Here
 
-* Python Development Accelerator
+* Python 401 next year
+(the new Development Accelerator)
 
 Outline of this Class
 ---------------------
@@ -159,15 +154,7 @@ Who are you?
 
 .. rst-class:: center large
 
-  Let's go around and introduce ourselves.
-
-
-Teams
--------------
-
-.. rst-class:: center large
-
-  Let's split the class up into 3 teams
+  Time for Python classmate speed-dating.
 
 
 Course Materials Online
@@ -181,7 +168,7 @@ GitHub
 There are two repositories in GitHub you will want to bookmark:
 
 Student Homework Repository:
-  https://github.com/codefellows/sea-c42-python
+  https://github.com/codefellows/sea-c45-python
 
   Fork this repository to your own github account and do homework there.
 
@@ -192,7 +179,7 @@ Course Materials Repository:
   assignments
 
   A rendered HTML copy of all these class materials may be found online at
-  http://codefellows.github.io/sea-c42-python
+  http://codefellows.github.io/sea-c45-python
 
 Canvas
 ------
@@ -200,7 +187,7 @@ Canvas
 We will be using Canvas to track your homework submission.  Grades will be
 entered here as well:
 
-http://canvas.instructure.com/courses/939488
+https://canvas.instructure.com/courses/961767
 
 
 Elsewhere
@@ -211,14 +198,14 @@ Class email list:
   announcements. Please make sure that you are receiving the messages sent to
   this list:
 
-  sea-c42@codefellows.com
+  sea-c45@codefellows.com
 
 Class `Slack <https://codefellows.slack.com>`_ Channel:
   The student repository README contains a link to the class chatroom. You can
   sign into the `Codefellow Slack team <https://codefellows.slack.com>` website
   or you can download the desktop client for your OS.
 
-  Once you're signed in, join the `#sea-c42` channel.
+  Once you're signed in, join the `#sea-c45-python` channel.
 
   This is the official communication medium for the class, and where announcements will be made.
 
@@ -694,7 +681,7 @@ Next, you'll make a copy of the class repository using ``git``.
 
 The canonical copy is in the CodeFellows organization on GitHub:
 
-https://github.com/codefellows/sea-c42-python
+https://github.com/codefellows/sea-c45-python
 
 Open that URL, and click on the *Fork* button at the top right corner.
 
@@ -709,7 +696,7 @@ At your command line, run the following commands:
 .. code-block:: bash
 
     $ cd your_working_directory_for_the_class
-    $ git clone https://github.com/<yourname>/sea-c42-python.git
+    $ git clone https://github.com/<yourname>/sea-c45-python.git
 
 (you can copy and paste that link from the gitHub page)
 
@@ -717,7 +704,7 @@ If you have an SSH key set up for gitHub, you'll want to do this instead:
 
 .. code-block:: bash
 
-    git@github.com:<yourname>/sea-c42-python.git
+    git@github.com:<yourname>/sea-c45-python.git
 
 **Remember**, <yourname> should be replaced by your github account name.
 
