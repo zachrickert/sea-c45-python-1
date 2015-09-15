@@ -12,3 +12,6 @@ I am really excited about learning Python.  I have tried some things out in Pyth
 * [Quanta Magazine](https://www.quantamagazine.org/)
 * [Fail Blog](http://failblog.cheezburger.com/)
 
+## Some programs that I created
+* [Hello World](https://github.com/zachrickert/hello/blob/master/hello.py) - I added a loop feature that will go through several languages.
+
