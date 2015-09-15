@@ -5,4 +5,10 @@ I live in Mukilteo WA (about 45 minutes north of Seattle) with my wonderful wife
 ## Programing Background
 I am really excited about learning Python.  I have tried some things out in Python, but have not had any formal training.  Earlier in the year I took the Foundations 1 course in JavaScript.  For my job, I taught myself Visual Basic to help augment spreadsheets and database files.  As an Actuary, back in the day, I did some coding in Fortran and in college I took a course or two in C++ (but that was 20 years ago)
 
-## Random Stuff that I like
+## Some random links that I like
+* [fivethirtyeight.com]http://fivethirtyeight.com/
+* [espn]http://espn.go.com/
+* [Discovery News]http://news.discovery.com/
+* [Quanta Magazine]https://www.quantamagazine.org/
+* [Fail Blog]http://failblog.cheezburger.com/
+
