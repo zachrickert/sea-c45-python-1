@@ -1,7 +1,7 @@
 # H1 Zach's Info
 
-# H2 Personal Info
+## Personal Info
 
-# H2 Programing Background
+## Programing Background
 
-# H2 Random Stuff that I like
+## Random Stuff that I like
