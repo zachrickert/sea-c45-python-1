@@ -16,5 +16,6 @@ I am really excited about learning Python.  I have tried some things out in Pyth
 * [Hello World](https://github.com/zachrickert/hello/blob/master/hello.py) - From the first class, I added a loop feature that will go through several languages.
 * [Prime](https://github.com/zachrickert/prime/blob/master/prime.py) - Will print all of the primes up to a given number.
 * [Pfactor](https://github.com/zachrickert/pfactor/blob/master/pfactor.py) - Will print out a prime factorization of a number.
+* [Number Guessing](https://github.com/zachrickert/guessing/blob/master/guess.py) - A number guessing game that I originally wrote for the foundation 1 class.  I am slowly moving this over to a python script.
 
 
