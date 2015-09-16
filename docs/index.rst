@@ -24,8 +24,11 @@ Contents:
 Materials:
 ----------
 
-homework/index
-supplements/index
+    .. toctree::
+        :maxdepth: 2
+
+        homework/index
+        supplements/index
 
 .. rst-class:: credit
 
