@@ -11,14 +11,14 @@ Contents:
 .. toctree::
    :maxdepth: 1
 
-:ref:`session1`
-session2
-session3
-session4
-session5
-session6
-session7
-session8
+   session1
+   session2
+   session3
+   session4
+   session5
+   session6
+   session7
+   session8
 
 
 Materials:
