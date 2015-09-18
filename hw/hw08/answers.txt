@@ -28,7 +28,8 @@ If we commented out the line gc_count = 0 we would run into the same name error 
 
 Problem 4:
 
-...
+GC-content: 0.43029262963
+AT-content: 0.568993851852
 
 Problem 5:
 

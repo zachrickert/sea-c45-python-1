@@ -29,9 +29,9 @@ filename = sys.argv[1]
 inputfile = open(filename)
 
 # All the nucleotides in the input file that have been read so far.
-# seq = ""
+seq = ""
 # The current line number (= the number of lines read so far).
-# linenum = 0
+linenum = 0
 
 
 for line in inputfile:
@@ -51,6 +51,7 @@ for line in inputfile:
 total_count = 0
 # Number of G and C nucleotides seen so far.
 gc_count = 0
+at_count = 0
 
 
 # for each base pair in the string,
@@ -63,9 +64,15 @@ for bp in seq:
         # increment the count of gc
         gc_count = gc_count + 1
 
+    if bp == 'A' or bp == 'T':
+        # increment the count of at
+        at_count = at_count + 1
+
 
 # divide the gc_count by the total_count
 gc_content = float(gc_count) / total_count
+at_content = float(at_count) / total_count
 
 # Print the answer
 print('GC-content:', gc_content)
+print('AT-content:', at_content)
