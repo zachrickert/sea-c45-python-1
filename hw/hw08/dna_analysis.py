@@ -58,35 +58,43 @@ c_count = 0
 a_count = 0
 t_count = 0
 
+other_count = 0       # Used for error checking in Problem #6
+
 
 # for each base pair in the string,
 for bp in seq:
-    # increment the total number of bps we've seen
-    total_count = total_count + 1
 
     # next, if the bp is a G or a C,
     if bp == 'C':
         c_count = c_count + 1
         gc_count = gc_count + 1
 
-    if bp == 'G':
+    elif bp == 'G':
         g_count = g_count + 1
         gc_count = gc_count + 1
 
-    if bp == 'A':
+    elif bp == 'A':
         a_count = a_count + 1
         at_count = at_count + 1
 
-    if bp == 'T':
+    elif bp == 'T':
         t_count = t_count + 1
         at_count = at_count + 1
 
+    else:
+        # print(bp)     Used in error checking for problem #6
+        other_count = other_count + 1
+
+    # Set the total count to just the bps that are g, c, a or t
+    total_count = g_count + c_count + a_count + t_count
 
 # divide the gc_count by the total_count
 gc_content = float(gc_count) / total_count
 at_content = float(at_count) / total_count
 
 # Print the answer
+print()
+print('***' + filename + '***')
 print('GC-content:', gc_content)
 print('AT-content:', at_content)
 print()
@@ -94,3 +102,9 @@ print('G-count:', g_count)
 print('C-count:', c_count)
 print('A-count:', a_count)
 print('T-count:', t_count)
+# print('Other:', other_count)      Used to error check for problem #6
+print()
+print('---Data Checking---')
+print('G + C + A + T\t', g_count + c_count + a_count + t_count)
+print('Total Count\t', total_count)
+print ('Sequence Length\t', len(seq))
