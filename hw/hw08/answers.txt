@@ -76,12 +76,14 @@ AT/GC ratio: 1.32234161747
 
 Problem 8:
 
-...
+GC Classification:  moderate GC content
 
 Collaboration:
 
-...
+No help
 
 Reflection:
 
-...
+In this exercise I learned to be pretty wary of data.    Under the assumption that our data would only contain Gs, Cs, As & Ts, our original code would have come up with the correct GC-content ratio.   However,  under closer inspection the data was not completely clean and our method for calculating the GC-content was slightly flawed.
+
+In the future, I will assume that the data is not perfectly clean and that I should write code to find / track any discrepancies between expected data values and actual data values.  Also checking multiple files or running the code on a file with known output helps in finding errors.  When we ran the code on the test-small file everything seemed to be working fine.  When we ran it the original code with the larger data files, then systemic errors started to show up in out numbers.

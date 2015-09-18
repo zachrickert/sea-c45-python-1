@@ -63,8 +63,8 @@ other_count = 0       # Used for error checking in Problem #6
 
 # for each base pair in the string,
 for bp in seq:
+    total_count = total_count + 1
 
-    # next, if the bp is a G or a C,
     if bp == 'C':
         c_count = c_count + 1
         gc_count = gc_count + 1
@@ -85,28 +85,31 @@ for bp in seq:
         # print(bp)     Used in error checking for problem #6
         other_count = other_count + 1
 
-    # Set the total count to just the bps that are g, c, a or t
-    total_count = g_count + c_count + a_count + t_count
+    # Set the sum count to just the bps that are g, c, a or t
+    sum_count = g_count + c_count + a_count + t_count
 
-# divide the gc_count by the total_count
-gc_content = float(gc_count) / total_count
-at_content = float(at_count) / total_count
+
+gc_content = float(gc_count) / sum_count
+if (gc_content > .6):
+    classification = "high GC content"
+elif (gc_content > .4):
+    classification = "moderate GC content"
+else:
+    classification = "low GC content"
+at_content = float(at_count) / sum_count
 at_gc_ratio = float(at_count) / gc_count
 
 # Print the answer
-print()
-print('***' + filename + '***')
-print('GC-content:', gc_content)
-print('AT-content:', at_content)
-print('AT/GC ratio:', at_gc_ratio)
-print()
-print('G-count:', g_count)
-print('C-count:', c_count)
-print('A-count:', a_count)
-print('T-count:', t_count)
+# print('***' + filename + '***')
+print('GC-content: ', gc_content)
+print('AT-content: ', at_content)
+print('G count: ', g_count)
+print('C count: ', c_count)
+print('A count: ', a_count)
+print('T count: ', t_count)
 # print('Other:', other_count)      Used to error check for problem #6
-print()
-print('---Data Checking---')
-print('G + C + A + T\t', g_count + c_count + a_count + t_count)
-print('Total Count\t', total_count)
-print ('Sequence Length\t', len(seq))
+print('Sum count: ', sum_count)
+print('Total count: ', total_count)
+print ('seq length ', len(seq))
+print('AT/GC ratio: ', at_gc_ratio)
+print('GC Classification: ', classification)
