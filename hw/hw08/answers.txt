@@ -17,11 +17,14 @@ Problem 1:
 
 Problem 2:
 
-...
+GC-content: 0.43029262963
 
 Problem 3:
 
-...
+When I comment out the seq = “” and linenum = 0, I got a name error on line 38.  On this line we are setting the variable linenum = linenum + 1, but since we commented out the original line of code that assigns linenum to zero the complier cannot resolve this statement.  At this point the variable is not named yet so we get the name error.
+
+If we commented out the line gc_count = 0 we would run into the same name error issue when python would try to execute the line to increment that variable (line 64).
+
 
 Problem 4:
 
