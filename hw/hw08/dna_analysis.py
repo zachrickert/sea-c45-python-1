@@ -91,12 +91,14 @@ for bp in seq:
 # divide the gc_count by the total_count
 gc_content = float(gc_count) / total_count
 at_content = float(at_count) / total_count
+at_gc_ratio = float(at_count) / gc_count
 
 # Print the answer
 print()
 print('***' + filename + '***')
 print('GC-content:', gc_content)
 print('AT-content:', at_content)
+print('AT/GC ratio:', at_gc_ratio)
 print()
 print('G-count:', g_count)
 print('C-count:', c_count)

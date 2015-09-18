@@ -72,7 +72,7 @@ AT-content: 0.569400129389 - correct formula
 
 Problem 7:
 
-...
+AT/GC ratio: 1.32234161747
 
 Problem 8:
 
