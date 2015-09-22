@@ -38,7 +38,7 @@ def lucas(n):
     return x
 
 
-def sum_series(n, n0, n1):
+def sum_series(n, n0=0, n1=1):
     """
     Return the nth number from a sum sequence
 
