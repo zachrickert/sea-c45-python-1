@@ -41,10 +41,11 @@ def check_prior_donations(donor_name):
 
     """
 
+
 def create_donor(donor_name):
     """ Adds a new donor to the list of donors.
     Sets up all initial fields."""
 
-def list_donors():
-    """ Lists all
 
+def list_donors():
+    """ Lists all donors. """
