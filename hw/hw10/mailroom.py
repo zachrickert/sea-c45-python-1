@@ -1,3 +1,28 @@
+import os
+
+
+def clear_screen():
+    os.system('clear')
+
+
+def print_welcome():
+    print ('Thank you for using the donor database.')
+    print()
+    print ('This program will allow you to: ')
+    print ('\t * Input a new donor.')
+    print ('\t * Input a donation from a donor.')
+    print ('\t * Print a thank you letter to the donor.')
+    print ('\t * Get a report on donations.')
+    print ()
+    print ('At any point in this program you can type:')
+    help_menu()
+
+
+def help_menu():
+    print("M = Main menu \t x = eXit")
+    print()
+
+
 def initial_prompt():
     """ Request data from the user.
 
@@ -12,13 +37,31 @@ def initial_prompt():
     returns value
 
     """
+    print("Would you like to do?")
+    print('T = Thank you letter \t R = Report \t X = eXit')
+    user_input = input('>>>')
+    user_input = validate_initial_prompt(user_input)
+    return user_input
 
 
-def validate_initial_prompt(text):
-    """ Validates user input at the initial prompt.
+def validate_initial_prompt(user_input):
+    """ Reads input and changes user info to specified type
 
-    returns True if data is in correct form
-    returns False if it is in an unknown input."""
+    If user input does not meet specifications
+    then user is sent back to initial prompt"""
+
+    user_input = user_input.lower()
+    exit = ['exit', 'x', 'quit', 'ex', 'q']
+    letter = ['t', 'thank', 'thank you', 'letter', 'thank you letter', 'l']
+    report = ['r', 'report']
+    if (user_input in exit):
+        quit()
+    elif (user_input in letter):
+        return 't'
+    elif (user_input in report):
+        return 'r'
+    else:
+        return initial_prompt()
 
 
 def enter_name():
@@ -95,3 +138,13 @@ def generate_report():
     """ Generates a report that lists all donors by donation amount.
 
     Prints their name, total donations, average donations."""
+
+
+def main():
+    clear_screen()
+    print_welcome()
+    initial_input = initial_prompt()
+    print(initial_input)
+
+
+main()
