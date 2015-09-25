@@ -44,7 +44,9 @@ def check_prior_donations(donor_name):
 
 def create_donor(donor_name):
     """ Adds a new donor to the list of donors.
-    Sets up all initial fields."""
+
+    Donor object created.
+    Donation history set to empty."""
 
 
 def list_donors():
@@ -70,16 +72,23 @@ def verify_donation():
         - has more than 2 decimal places."""
 
 
-def print_thankyou(donor_name, donation_amount):
-    """ Prints a nice thank you letter for the inputted donor."""
+def print_thankyou(donor_object):
+    """ Prints a nice thank you letter for the inputted donor.
+
+    Will include a friendly personalized greeting
+    to the donot by spicing the given name.
+
+    """
 
 
-def calculate_total_donation(donor_name):
+def calculate_total_donation(donor_object):
     """ Calculates the total amount of all donations for a given donor."""
 
 
-def calculte_avg_donation(donor_name):
-    """ Calculates the average amount of donations from a given donor."""
+def calculte_avg_donation(donor_object):
+    """ Calculates the average amount of donations from a given donor.
+
+    Will round to the nearest cent."""
 
 
 def generate_report():
