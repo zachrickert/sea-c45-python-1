@@ -29,7 +29,7 @@ def enter_name():
     2) List
     2) Return to main menu.
 
-    returns full name or command to llist all donors.
+    returns full name or command to list all donors.
     """
 
 
@@ -48,4 +48,41 @@ def create_donor(donor_name):
 
 
 def list_donors():
-    """ Lists all donors. """
+    """ Lists all donors.
+
+    Will sort donors some logical way."""
+
+
+def input_donation():
+    """ Asks user to input a donation amount.
+
+    Returns donation amount in the form of a floating point amount."""
+
+
+def verify_donation():
+    """ Verifies that a correct donation amount has been entered.
+
+    Returns true if it is a valid amount.
+
+    Returns False if it is:
+        - has alpha charicters.
+        - is negative.
+        - has more than 2 decimal places."""
+
+
+def print_thankyou(donor_name, donation_amount):
+    """ Prints a nice thank you letter for the inputted donor."""
+
+
+def calculate_total_donation(donor_name):
+    """ Calculates the total amount of all donations for a given donor."""
+
+
+def calculte_avg_donation(donor_name):
+    """ Calculates the average amount of donations from a given donor."""
+
+
+def generate_report():
+    """ Generates a report that lists all donors by donation amount.
+
+    Prints their name, total donations, average donations."""
