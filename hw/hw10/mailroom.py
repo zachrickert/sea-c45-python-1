@@ -228,7 +228,6 @@ def report(donors):
                                             donors[i].numb_of_donations,
                                             average)
         print(line)
-    wait_for_input()
 
 
 def is_float(x):
@@ -252,9 +251,13 @@ def format_currency(numb):
 
 
 def wait_for_input():
+    exit = ['exit', 'x', 'ex', 'e', 'q', 'quit']
     print()
-    print('Press Enter to Continue...')
-    input()
+    x = input('Press Enter to Continue...')
+    if (x in exit):
+        return False
+    else:
+        return True
 
 
 def sort_donors(donors, sort_by):
@@ -298,10 +301,9 @@ Your money will go towards creating newer sillier walks.
 Thanks again,
 John Cleese
 Director, CEO M.S.W.
-""".format(self.fname, last_donation)
+""".format(self.name, last_donation)
 
         print(letter)
-        wait_for_input()
 
     def calc_total_and_avg(self):
         self.total = 0
@@ -337,6 +339,7 @@ if __name__ == '__main__':
                 if (donor_name == 'l'):
                     calculate_donations(donors)
                     list_donors(donors)
+                    not_done = wait_for_input()
                 else:
                     valid_name = True
 
@@ -354,7 +357,9 @@ if __name__ == '__main__':
 
             donors[don_numb].add_donation_amount(donation_amount)
             donors[don_numb].thank_you()
+            not_done = wait_for_input()
 
         elif(initial_input == 'r'):
             calculate_donations(donors)
             generate_report(donors)
+            not_done = wait_for_input()
