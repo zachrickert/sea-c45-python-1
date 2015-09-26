@@ -5,7 +5,12 @@ def clear_screen():
     os.system('clear')
 
 
+def print_title():
+    print('Welcome to Mailroom Madness')
+
+
 def print_welcome():
+    print_title()
     print ('Thank you for using the donor database.')
     print()
     print ('This program will allow you to: ')
@@ -37,9 +42,11 @@ def initial_prompt():
     returns value
 
     """
-    print("Would you like to do?")
-    print('T = Thank you letter \t R = Report \t X = eXit')
-    user_input = input('>>>')
+    print("Choose from the following:")
+    print('T - Send a (T)hank You')
+    print('R - Create a (R)eport')
+    print('quit - Quit the Program')
+    user_input = input('>')
     user_input = validate_initial_prompt(user_input)
     return user_input
 
@@ -51,11 +58,11 @@ def validate_initial_prompt(user_input):
     then user is sent back to initial prompt"""
 
     user_input = user_input.lower()
-    exit = ['exit', 'x', 'quit', 'ex', 'q']
-    letter = ['t', 'thank', 'thank you', 'letter', 'thank you letter', 'l']
-    report = ['r', 'report']
+    exit = ['exit', 'x', 'quit', 'ex', 'q', 'e']
+    letter = ['t', 'thank', 'thank you', 'l', 'letter', 's', 'send']
+    report = ['r', 'report', 'c', 'create']
     if (user_input in exit):
-        quit()
+        return 'x'
     elif (user_input in letter):
         return 't'
     elif (user_input in report):
@@ -75,27 +82,83 @@ def enter_name():
     returns full name or command to list all donors.
     """
 
+    clear_screen()
+    print_title()
+    print('Please enter a name or chose from the following:')
+    print('list - Print a list of previous donors')
+    print('quit - Return to main menu')
+    name = input(">")
+    name = validate_name(name)
+    return name
 
-def check_prior_donations(donor_name):
+
+def validate_name(input_name):
+    temp_name = input_name.lower()
+
+    exit = ['exit', 'x', 'ex', 'e']
+    main = ['q', 'quit', 'm', 'main', 'menu']
+    report = ['l', 'list', 'report']
+    if (temp_name in exit):
+        return 'x'
+    elif(temp_name in main):
+        return 'm'
+    elif(temp_name in report):
+        return 'l'
+    else:
+        return input_name
+
+
+def is_current_donor(donor_name, all_donors):
     """Compares name to names of people who have given in the past.
 
     Returns True if the name is in the database.
     Returns False if the name is not in the database.
 
     """
+    donor = False
+    for names in all_donors:
+        if(donor_name == names):
+            donor = True
+
+    return donor
 
 
-def create_donor(donor_name):
+def get_donor_number(donor_name, donors):
+    """Compares name to names of people who have given in the past.
+
+    Returns donor number if a donor record already exists.
+    Creates a new number for new donors.
+
+    """
+    is_new = True
+
+    for i in range(len(donors)):
+        if(donor_name == donors[i].name):
+            is_new = False
+            break
+
+    if (is_new):
+        create_donor(donor_name, donors)
+        return (len(donors) - 1)
+    else:
+        return i
+
+
+def create_donor(donor_name, donors):
     """ Adds a new donor to the list of donors.
 
     Donor object created.
     Donation history set to empty."""
+    new_donor = Donor(donor_name)
+    donors.append(new_donor)
 
 
-def list_donors():
+def list_donors(donors):
     """ Lists all donors.
 
     Will sort donors some logical way."""
+    for i in range(len(donors)):
+        print(donors[i].name, donors[i].donation_amount)
 
 
 def input_donation():
@@ -103,8 +166,14 @@ def input_donation():
 
     Returns donation amount in the form of a floating point amount."""
 
+    print()
+    print("Please enter donation amount or 'quit':")
+    donation = input('>')
+    donation = verify_donation(donation)
+    return donation
 
-def verify_donation():
+
+def verify_donation(donation):
     """ Verifies that a correct donation amount has been entered.
 
     Returns true if it is a valid amount.
@@ -114,14 +183,22 @@ def verify_donation():
         - is negative.
         - has more than 2 decimal places."""
 
+    main = ['q', 'quit', 'm', 'main', 'menu']
+    if (donation.lower() in main):
+        return 'quit'
 
-def print_thankyou(donor_object):
-    """ Prints a nice thank you letter for the inputted donor.
+    elif (not(is_float(donation))):
+        return input_donation()
 
-    Will include a friendly personalized greeting
-    to the donot by spicing the given name.
+    else:
+        donation = float(donation)
+        if (donation <= 0):
+            return input_donation()
 
-    """
+        elif (not(is_currency(donation))):
+            return input_donation()
+        else:
+            return donation
 
 
 def calculate_total_donation(donor_object):
@@ -140,11 +217,94 @@ def generate_report():
     Prints their name, total donations, average donations."""
 
 
+def is_float(x):
+    try:
+        float(x)
+        return True
+    except ValueError:
+        return False
+
+
+def is_currency(x):
+    if (((x * 1000) % 10) > 0):
+        temp = False
+    else:
+        temp = True
+    return temp
+
+
+class Donor(object):
+    def __init__(self, name):
+        self.name = name
+        self.donation_amount = []
+        self.parse_name()
+
+    def add_donation_amount(self, donation_amount):
+        self.donation_amount.append(donation_amount)
+
+    def parse_name(self):
+        self.fname = self.name.split(' ')[0]
+
+    def thank_you(self):
+        """ Prints a nice thank you letter for the inputted donor.
+
+        Will include a friendly personalized greeting
+        to the donot by spicing the given name.
+
+        """
+
+        last_donation = self.donation_amount[len(self.donation_amount) - 1]
+        last_donation = str('%0.2f' % last_donation)
+
+        letter = """Dear {},
+Thank you so much for your kind donation of ${}.
+We here at the Ministry for Silly Walks greatly appreciate it.
+Your money will go towards creating newer sillier walks.
+
+Thanks again,
+John CLeese
+Director, CEO M.S.W.
+
+""".format(self.fname, last_donation)
+
+        print(letter)
+
+
 def main():
-    clear_screen()
-    print_welcome()
-    initial_input = initial_prompt()
-    print(initial_input)
+    not_done = True
+    is_first_time = False  # Originally had a more verbose intro.
+    donors = []
+
+    while not_done:
+        clear_screen()
+        if (is_first_time):
+            print_welcome()
+            is_first_time = False
+        else:
+            print_title()
+
+        initial_input = initial_prompt()
+        if(initial_input == 'x'):
+            not_done = False
+            continue
+        elif(initial_input == 't'):
+            donor_name = enter_name()
+            if (donor_name == 'x'):
+                not_done = False
+                continue
+            if (donor_name == 'm'):
+                continue
+            donation_amount = input_donation()
+            if (donation_amount == 'quit'):
+                continue
+
+            don_numb = get_donor_number(donor_name, donors)
+
+            donors[don_numb].add_donation_amount(donation_amount)
+
+            donors[don_numb].thank_you()
+
+            input()
 
 
 main()
