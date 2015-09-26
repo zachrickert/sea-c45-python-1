@@ -83,7 +83,7 @@ def enter_name():
     """
 
     clear_screen()
-    print_title()
+    # print_title()
     print('Please enter a name or chose from the following:')
     print('list - Print a list of previous donors')
     print('quit - Return to main menu')
@@ -155,12 +155,10 @@ def create_donor(donor_name, donors, id_numb):
 
 def list_donors(donors):
     """ Lists all donors.
-
-    Will sort donors some logical way."""
+    by namesome logical way."""
 
     sort_donors(donors, 'name')
-    for i in range(len(donors)):
-        print(donors[i].name, donors[i].donation_amount)
+    report(donors)
 
 
 def input_donation():
@@ -220,12 +218,17 @@ def generate_report(donors):
 
 
 def report(donors):
+    print('Name \t\t| Total \t\t| # \t| Average ')
+    print('_____________________________________________________________')
     for i in range(len(donors)):
+        total = format_currency(donors[i].total)
+        average = format_currency(donors[i].average)
 
-        line = "{}\t{}\t{}\t{}".format(donors[i].name, donors[i].total,
-                                       donors[i].numb_of_donations,
-                                       donors[i].average)
+        line = "{}\t|{}\t\t|{}\t|{}".format(donors[i].name, total,
+                                            donors[i].numb_of_donations,
+                                            average)
         print(line)
+    wait_for_input()
 
 
 def is_float(x):
@@ -244,10 +247,20 @@ def is_currency(x):
     return temp
 
 
+def format_currency(numb):
+    return '$' + str('%0.2f' % numb)
+
+
+def wait_for_input():
+    print()
+    print('Press Enter to Continue...')
+    input()
+
+
 def sort_donors(donors, sort_by):
     if (sort_by == 'total'):
         donors.sort(key=lambda x: x.total, reverse=True)
-    if (sort_by == 'id_numb'):
+    elif (sort_by == 'id_numb'):
         donors.sort(key=lambda x: x.donor_id_numb, reverse=False)
     else:  # default to name
         donors.sort(key=lambda x: x.name, reverse=False)
@@ -275,20 +288,20 @@ class Donor(object):
         """
 
         last_donation = self.donation_amount[len(self.donation_amount) - 1]
-        last_donation = str('%0.2f' % last_donation)
+        last_donation = format_currency(last_donation)
 
         letter = """Dear {},
-Thank you so much for your kind donation of ${}.
+Thank you so much for your kind donation of {}.
 We here at the Ministry for Silly Walks greatly appreciate it.
 Your money will go towards creating newer sillier walks.
 
 Thanks again,
 John Cleese
 Director, CEO M.S.W.
-
 """.format(self.fname, last_donation)
 
         print(letter)
+        wait_for_input()
 
     def calc_total_and_avg(self):
         self.total = 0
@@ -299,7 +312,7 @@ Director, CEO M.S.W.
         self.average = self.total / self.numb_of_donations
 
 
-def main():
+if __name__ == '__main__':
     not_done = True
     is_first_time = False  # Originally had a more verbose intro.
     donors = []
@@ -322,8 +335,8 @@ def main():
             while (not(valid_name)):
                 donor_name = enter_name()
                 if (donor_name == 'l'):
+                    calculate_donations(donors)
                     list_donors(donors)
-                    input()
                 else:
                     valid_name = True
 
@@ -345,8 +358,3 @@ def main():
         elif(initial_input == 'r'):
             calculate_donations(donors)
             generate_report(donors)
-
-        input()
-
-
-main()
