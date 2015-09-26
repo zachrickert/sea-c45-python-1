@@ -138,18 +138,18 @@ def get_donor_number(donor_name, donors):
             break
 
     if (is_new):
-        create_donor(donor_name, donors)
+        create_donor(donor_name, donors, len(donors) - 1)
         return (len(donors) - 1)
     else:
         return i
 
 
-def create_donor(donor_name, donors):
+def create_donor(donor_name, donors, id_numb):
     """ Adds a new donor to the list of donors.
 
     Donor object created.
     Donation history set to empty."""
-    new_donor = Donor(donor_name)
+    new_donor = Donor(donor_name, id_numb)
     donors.append(new_donor)
 
 
@@ -157,6 +157,8 @@ def list_donors(donors):
     """ Lists all donors.
 
     Will sort donors some logical way."""
+
+    sort_donors(donors, 'name')
     for i in range(len(donors)):
         print(donors[i].name, donors[i].donation_amount)
 
@@ -201,20 +203,29 @@ def verify_donation(donation):
             return donation
 
 
-def calculate_total_donation(donor_object):
-    """ Calculates the total amount of all donations for a given donor."""
+def calculate_donations(donors):
+    """Finds the total and average amount of all donations for all donors."""
+
+    for i in range(len(donors)):
+        donors[i].calc_total_and_avg()
 
 
-def calculte_avg_donation(donor_object):
-    """ Calculates the average amount of donations from a given donor.
-
-    Will round to the nearest cent."""
-
-
-def generate_report():
+def generate_report(donors):
     """ Generates a report that lists all donors by donation amount.
 
     Prints their name, total donations, average donations."""
+
+    sort_donors(donors, 'total')
+    report(donors)
+
+
+def report(donors):
+    for i in range(len(donors)):
+
+        line = "{}\t{}\t{}\t{}".format(donors[i].name, donors[i].total,
+                                       donors[i].numb_of_donations,
+                                       donors[i].average)
+        print(line)
 
 
 def is_float(x):
@@ -233,9 +244,19 @@ def is_currency(x):
     return temp
 
 
+def sort_donors(donors, sort_by):
+    if (sort_by == 'total'):
+        donors.sort(key=lambda x: x.total, reverse=True)
+    if (sort_by == 'id_numb'):
+        donors.sort(key=lambda x: x.donor_id_numb, reverse=False)
+    else:  # default to name
+        donors.sort(key=lambda x: x.name, reverse=False)
+
+
 class Donor(object):
-    def __init__(self, name):
+    def __init__(self, name, numb):
         self.name = name
+        self.donor_id_numb = numb
         self.donation_amount = []
         self.parse_name()
 
@@ -262,12 +283,20 @@ We here at the Ministry for Silly Walks greatly appreciate it.
 Your money will go towards creating newer sillier walks.
 
 Thanks again,
-John CLeese
+John Cleese
 Director, CEO M.S.W.
 
 """.format(self.fname, last_donation)
 
         print(letter)
+
+    def calc_total_and_avg(self):
+        self.total = 0
+        for i in range(len(self.donation_amount)):
+            self.total = self.total + self.donation_amount[i]
+
+        self.numb_of_donations = i + 1
+        self.average = self.total / self.numb_of_donations
 
 
 def main():
@@ -288,12 +317,22 @@ def main():
             not_done = False
             continue
         elif(initial_input == 't'):
-            donor_name = enter_name()
+            valid_name = False
+
+            while (not(valid_name)):
+                donor_name = enter_name()
+                if (donor_name == 'l'):
+                    list_donors(donors)
+                    input()
+                else:
+                    valid_name = True
+
             if (donor_name == 'x'):
                 not_done = False
                 continue
             if (donor_name == 'm'):
                 continue
+
             donation_amount = input_donation()
             if (donation_amount == 'quit'):
                 continue
@@ -301,10 +340,13 @@ def main():
             don_numb = get_donor_number(donor_name, donors)
 
             donors[don_numb].add_donation_amount(donation_amount)
-
             donors[don_numb].thank_you()
 
-            input()
+        elif(initial_input == 'r'):
+            calculate_donations(donors)
+            generate_report(donors)
+
+        input()
 
 
 main()
