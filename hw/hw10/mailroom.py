@@ -9,25 +9,6 @@ def print_title():
     print('Welcome to Mailroom Madness')
 
 
-def print_welcome():
-    print_title()
-    print ('Thank you for using the donor database.')
-    print()
-    print ('This program will allow you to: ')
-    print ('\t * Input a new donor.')
-    print ('\t * Input a donation from a donor.')
-    print ('\t * Print a thank you letter to the donor.')
-    print ('\t * Get a report on donations.')
-    print ()
-    print ('At any point in this program you can type:')
-    help_menu()
-
-
-def help_menu():
-    print("M = Main menu \t x = eXit")
-    print()
-
-
 def initial_prompt():
     """ Request data from the user.
 
@@ -96,7 +77,7 @@ def validate_name(input_name):
     temp_name = input_name.lower()
 
     exit = ['exit', 'x', 'ex', 'e']
-    main = ['q', 'quit', 'm', 'main', 'menu']
+    main = ['q', 'quit', 'm', 'main', 'menu']  # quit returns to main menu.
     report = ['l', 'list', 'report']
     if (temp_name in exit):
         return 'x'
@@ -239,6 +220,7 @@ def is_float(x):
 
 
 def is_currency(x):
+    """Checks to see if there is only two decimal places."""
     if (((x * 1000) % 10) > 0):
         temp = False
     else:
@@ -255,9 +237,9 @@ def wait_for_input():
     print()
     x = input('Press Enter to Continue...')
     if (x in exit):
-        return False
-    else:
         return True
+    else:
+        return False
 
 
 def sort_donors(donors, sort_by):
@@ -315,36 +297,33 @@ Director, CEO M.S.W.
 
 
 if __name__ == '__main__':
-    not_done = True
-    is_first_time = False  # Originally had a more verbose intro.
+    done = False
     donors = []
 
-    while not_done:
+    while (not done):
         clear_screen()
-        if (is_first_time):
-            print_welcome()
-            is_first_time = False
-        else:
-            print_title()
+        print_title()
 
         initial_input = initial_prompt()
         if(initial_input == 'x'):
-            not_done = False
+            done = True
             continue
         elif(initial_input == 't'):
-            valid_name = False
+            list_names = True
 
-            while (not(valid_name)):
+            # Will loop back to the name prompt if they ask to see the list
+            while (list_names):
                 donor_name = enter_name()
                 if (donor_name == 'l'):
                     calculate_donations(donors)
                     list_donors(donors)
-                    not_done = wait_for_input()
+                    done = wait_for_input()
                 else:
-                    valid_name = True
+                    list_names = False
+                    # Anything besides l will conmtinue
 
             if (donor_name == 'x'):
-                not_done = False
+                done = True
                 continue
             if (donor_name == 'm'):
                 continue
@@ -357,9 +336,9 @@ if __name__ == '__main__':
 
             donors[don_numb].add_donation_amount(donation_amount)
             donors[don_numb].thank_you()
-            not_done = wait_for_input()
+            done = wait_for_input()
 
         elif(initial_input == 'r'):
             calculate_donations(donors)
             generate_report(donors)
-            not_done = wait_for_input()
+            done = wait_for_input()
