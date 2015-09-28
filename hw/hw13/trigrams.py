@@ -1,10 +1,10 @@
 import random
-file = open("test.txt", 'r')
+file = open("sherlock_small.txt", 'r')
 
 lines = file.readlines()
 words = []
 trigrams = {}
-start_phrase = "I wish"
+start_phrase = "I was"
 
 for line in lines:
     words += line.split()
@@ -19,9 +19,7 @@ for i in (range(len(words) - 2)):
 done = False
 
 word_2 = start_phrase.split()[0]
-word_2 = "I"
 word_1 = start_phrase.split()[1]
-word_1 = "wish"
 sentance = start_phrase
 j = 0
 
@@ -41,3 +39,5 @@ while not done:
         done = True
 
 print(sentance)
+
+file.close()
