@@ -12,13 +12,23 @@ John Cleese
 Director, CEO M.S.W.
 '''
 
+TITLE = '''
+Welcome to Mailroom Madness
+'''
+
+INITIAL_MENU = '''
+Choose from the following:
+T - Send a (T)hank You
+R - Create a (R)eport
+I - (I)mport donor data from file
+quit - Quit the Program
+'''
+
+donors = []
+
 
 def clear_screen():
     os.system('clear')
-
-
-def print_title():
-    print('Welcome to Mailroom Madness')
 
 
 def initial_prompt():
@@ -35,10 +45,8 @@ def initial_prompt():
     returns value
 
     """
-    print("Choose from the following:")
-    print('T - Send a (T)hank You')
-    print('R - Create a (R)eport')
-    print('quit - Quit the Program')
+
+    print(INITIAL_MENU)
     user_input = input('>')
     user_input = validate_initial_prompt(user_input)
     return user_input
@@ -54,12 +62,16 @@ def validate_initial_prompt(user_input):
     exit = ['exit', 'x', 'quit', 'ex', 'q', 'e']
     letter = ['t', 'thank', 'thank you', 'l', 'letter', 's', 'send']
     report = ['r', 'report', 'c', 'create']
+    inport = ['i', 'inport']
+
     if (user_input in exit):
         return 'x'
     elif (user_input in letter):
         return 't'
     elif (user_input in report):
         return 'r'
+    elif (user_input in inport):
+        return 'i'
     else:
         return initial_prompt()
 
@@ -76,7 +88,7 @@ def enter_name():
     """
 
     clear_screen()
-    # print_title()
+    print(TITLE)
     print('Please enter a name or chose from the following:')
     print('list - Print a list of previous donors')
     print('quit - Return to main menu')
@@ -101,7 +113,7 @@ def validate_name(input_name):
         return input_name
 
 
-def is_current_donor(donor_name, all_donors):
+def is_current_donor(donor_name):
     """Compares name to names of people who have given in the past.
 
     Returns True if the name is in the database.
@@ -109,14 +121,14 @@ def is_current_donor(donor_name, all_donors):
 
     """
     donor = False
-    for names in all_donors:
+    for names in donors:
         if(donor_name == names):
             donor = True
 
     return donor
 
 
-def get_donor_number(donor_name, donors):
+def get_donor_number(donor_name):
     """Compares name to names of people who have given in the past.
 
     Returns donor number if a donor record already exists.
@@ -131,13 +143,13 @@ def get_donor_number(donor_name, donors):
             break
 
     if (is_new):
-        create_donor(donor_name, donors, len(donors) - 1)
+        create_donor(donor_name, len(donors) - 1)
         return (len(donors) - 1)
     else:
         return i
 
 
-def create_donor(donor_name, donors, id_numb):
+def create_donor(donor_name, id_numb):
     """ Adds a new donor to the list of donors.
 
     Donor object created.
@@ -146,12 +158,12 @@ def create_donor(donor_name, donors, id_numb):
     donors.append(new_donor)
 
 
-def list_donors(donors):
+def list_donors():
     """ Lists all donors.
     by namesome logical way."""
 
-    sort_donors(donors, 'name')
-    report(donors)
+    sort_donors('name')
+    report()
 
 
 def input_donation():
@@ -194,23 +206,23 @@ def verify_donation(donation):
             return donation
 
 
-def calculate_donations(donors):
+def calculate_donations():
     """Finds the total and average amount of all donations for all donors."""
 
     for i in range(len(donors)):
         donors[i].calc_total_and_avg()
 
 
-def generate_report(donors):
+def generate_report():
     """ Generates a report that lists all donors by donation amount.
 
     Prints their name, total donations, average donations."""
 
-    sort_donors(donors, 'total')
-    report(donors)
+    sort_donors('total')
+    report()
 
 
-def report(donors):
+def report():
     print('Name \t\t| Total \t\t| # \t| Average ')
     print('_____________________________________________________________')
     for i in range(len(donors)):
@@ -254,7 +266,28 @@ def wait_for_input():
         return False
 
 
-def sort_donors(donors, sort_by):
+def import_donors():
+    try:
+        f = open('donor.txt', 'r')
+        finish_import = True
+
+    except IOError:
+        print('donor.txt not found. No data importted.')
+        finish_import = False
+
+    if finish_import:
+        for line in f:
+            values = line.split(",")
+            don_numb = get_donor_number(values[0])
+            for i in range(1, len(values)):
+                donors[don_numb].add_donation_amount(float(values[i]))
+
+        print('donor.txt found and importted')
+
+    wait_for_input()
+
+
+def sort_donors(sort_by):
     if (sort_by == 'total'):
         donors.sort(key=lambda x: x.total, reverse=True)
     elif (sort_by == 'id_numb'):
@@ -285,10 +318,11 @@ class Donor(object):
         """
 
         try:
-            f = open("letter_template2.txt")
+            f = open("letter_template.txt", 'r')
             letter = ""
             for line in f:
-                letter = letter + line
+                if(not(line[0] == '#')):
+                    letter = letter + line
 
             f.close()
 
@@ -311,11 +345,10 @@ class Donor(object):
 
 if __name__ == '__main__':
     done = False
-    donors = []
 
     while (not done):
         clear_screen()
-        print_title()
+        print(TITLE)
 
         initial_input = initial_prompt()
         if(initial_input == 'x'):
@@ -328,8 +361,8 @@ if __name__ == '__main__':
             while (list_names):
                 donor_name = enter_name()
                 if (donor_name == 'l'):
-                    calculate_donations(donors)
-                    list_donors(donors)
+                    calculate_donations()
+                    list_donors()
                     done = wait_for_input()
                 else:
                     list_names = False
@@ -345,13 +378,16 @@ if __name__ == '__main__':
             if (donation_amount == 'quit'):
                 continue
 
-            don_numb = get_donor_number(donor_name, donors)
+            don_numb = get_donor_number(donor_name)
 
             donors[don_numb].add_donation_amount(donation_amount)
             donors[don_numb].thank_you()
             done = wait_for_input()
 
         elif(initial_input == 'r'):
-            calculate_donations(donors)
-            generate_report(donors)
+            calculate_donations()
+            generate_report()
             done = wait_for_input()
+
+        elif(initial_input == 'i'):
+            import_donors()

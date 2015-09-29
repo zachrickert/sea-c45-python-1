@@ -1,0 +1,16 @@
+Sidney Lotterby, 100, 50, 100
+Marcus Rugman, 25
+Wolfgang Mozart, 1000, 250
+Jimmy Buzzard, 10
+Vincent Foster, 250, 250
+Eric Praline, 10, 15, 15, 20, 10, 10, 1000, 250
+Robert Eversley, 2500
+Adrian Furrows, 60, 90, 120
+James McRettin, 750
+Mervyn Little, 10
+Roger Last, 10, 15
+E. Henry Thripshaw, 700, 750, 950
+Dennis Moore, 12, 94, 43
+Lord Kinwoodie, 3000, 2500
+James McNeill Whistler, 75000, 5000
+Pier Paolo Pasolini, 600, 400, 450, 500, 250, 500, 500, 500, 675
