@@ -1,6 +1,18 @@
 import os
 
 
+DEFAULT_LETTER = '''
+Dear {name},
+Thank you so much for your kind donation of {amount}.
+We here at the Ministry for Silly Walks greatly appreciate it.
+Your money will go towards creating newer sillier walks.
+
+Thanks again,
+John Cleese
+Director, CEO M.S.W.
+'''
+
+
 def clear_screen():
     os.system('clear')
 
@@ -272,20 +284,21 @@ class Donor(object):
 
         """
 
+        try:
+            f = open("letter_template2.txt")
+            letter = ""
+            for line in f:
+                letter = letter + line
+
+            f.close()
+
+        except IOError:
+            letter = DEFAULT_LETTER
+
         last_donation = self.donation_amount[len(self.donation_amount) - 1]
         last_donation = format_currency(last_donation)
 
-        letter = """Dear {},
-Thank you so much for your kind donation of {}.
-We here at the Ministry for Silly Walks greatly appreciate it.
-Your money will go towards creating newer sillier walks.
-
-Thanks again,
-John Cleese
-Director, CEO M.S.W.
-""".format(self.name, last_donation)
-
-        print(letter)
+        print(letter.format(name=self.name, amount=last_donation))
 
     def calc_total_and_avg(self):
         self.total = 0
