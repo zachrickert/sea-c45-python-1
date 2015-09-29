@@ -1,6 +1,39 @@
 import os
 
 
+TITLE = '''
+Welcome to Mailroom Madness
+'''
+
+MAIN_MENU = '''
+Choose from the following:
+T - Send a (T)hank You
+R - Create a (R)eport
+quit - Quit the Program
+'''
+
+THANKYOU_MENU = '''
+Please enter a name or chose from the following:
+list - Print a list of previous donors
+quit - Return to main menu
+'''
+
+REPORT_HEADER = '''
+Report Manager
+'''
+
+LIST_HEADER = '''
+List Manager
+'''
+
+DONATION_AMOUNT = '''
+Please enter donation amount or 'quit':
+'''
+
+WAIT_TEXT = '''
+Press Enter to Continue...
+'''
+
 DEFAULT_LETTER = '''
 Dear {name},
 Thank you so much for your kind donation of {amount}.
@@ -12,93 +45,49 @@ John Cleese
 Director, CEO M.S.W.
 '''
 
-TITLE = '''
-Welcome to Mailroom Madness
-'''
-
-INITIAL_MENU = '''
-Choose from the following:
-T - Send a (T)hank You
-R - Create a (R)eport
-I - (I)mport donor data from file
-quit - Quit the Program
-'''
-
-donors = []
-
 
 def clear_screen():
     os.system('clear')
 
 
-def initial_prompt():
-    """ Request data from the user.
-
-    Inputs are either:
-    1) Send Thank you
-    2) Create Report
-    3) Quit
-
-    calls validate_initial_prompt to verify results
-    if not verified will ask user to Inputs
-
-    returns value
-
-    """
-
-    print(INITIAL_MENU)
-    user_input = input('>')
-    user_input = validate_initial_prompt(user_input)
-    return user_input
+def prompt(menu):
+    if (menu != 'quit'):
+        if (menu != 'wait'):
+            clear_screen()
+            print(TITLE)
+        print(menus[menu])
+        if (menu == 'list' or menu == 'report'):
+            reply = None
+        else:
+            reply = input('>')
+        validate = validator[menu]
+        reply = validate(reply)
+        return reply
 
 
-def validate_initial_prompt(user_input):
+def main_validator(user_input):
     """ Reads input and changes user info to specified type
 
     If user input does not meet specifications
     then user is sent back to initial prompt"""
 
     user_input = user_input.lower()
-    exit = ['exit', 'x', 'quit', 'ex', 'q', 'e']
-    letter = ['t', 'thank', 'thank you', 'l', 'letter', 's', 'send']
+    quit = ['exit', 'x', 'quit', 'ex', 'q', 'e']
+    letter = ['t', 'thank', 'thank you', 'l', 'letter', 'send']
     report = ['r', 'report', 'c', 'create']
-    inport = ['i', 'inport']
 
-    if (user_input in exit):
-        return 'x'
+    if (user_input in quit):
+        return 'quit'
     elif (user_input in letter):
-        return 't'
+        return 'thankyou'
     elif (user_input in report):
-        return 'r'
-    elif (user_input in inport):
-        return 'i'
+        return 'report'
     else:
-        return initial_prompt()
+        return prompt('main')
 
 
-def enter_name():
-    """ Will prompt user to enter donor's name.
-
-    Inputs would be:
-    1) Full Name
-    2) List
-    2) Return to main menu.
-
-    returns full name or command to list all donors.
-    """
-
-    clear_screen()
-    print(TITLE)
-    print('Please enter a name or chose from the following:')
-    print('list - Print a list of previous donors')
-    print('quit - Return to main menu')
-    name = input(">")
-    name = validate_name(name)
-    return name
-
-
-def validate_name(input_name):
-    temp_name = input_name.lower()
+def name_validator(user_input):
+    temp_name = user_input.lower()
 
     exit = ['exit', 'x', 'ex', 'e']
     main = ['q', 'quit', 'm', 'main', 'menu']  # quit returns to main menu.
@@ -106,79 +95,52 @@ def validate_name(input_name):
     if (temp_name in exit):
         return 'x'
     elif(temp_name in main):
-        return 'm'
+        return 'main'
     elif(temp_name in report):
-        return 'l'
+        return 'list'
     else:
-        return input_name
+        create_donor(temp_name.title())
+        return('donate')
 
 
-def is_current_donor(donor_name):
-    """Compares name to names of people who have given in the past.
+def wait_validator(user_input):
+    exit = ['exit', 'x', 'ex', 'e', 'quit', 'q']
 
-    Returns True if the name is in the database.
-    Returns False if the name is not in the database.
+    if user_input in exit:
+        return 'quit'
 
-    """
-    donor = False
-    for names in donors:
-        if(donor_name == names):
-            donor = True
-
-    return donor
+    return 'main'
 
 
-def get_donor_number(donor_name):
-    """Compares name to names of people who have given in the past.
-
-    Returns donor number if a donor record already exists.
-    Creates a new number for new donors.
-
-    """
-    is_new = True
-
+def report_validator(user_input):
     for i in range(len(donors)):
-        if(donor_name == donors[i].name):
-            is_new = False
-            break
-
-    if (is_new):
-        create_donor(donor_name, len(donors) - 1)
-        return (len(donors) - 1)
-    else:
-        return i
+        donors[i].calc_total_and_avg()
+    sort_donors('total')
+    report()
+    return 'wait'
 
 
-def create_donor(donor_name, id_numb):
-    """ Adds a new donor to the list of donors.
-
-    Donor object created.
-    Donation history set to empty."""
-    new_donor = Donor(donor_name, id_numb)
-    donors.append(new_donor)
-
-
-def list_donors():
-    """ Lists all donors.
-    by namesome logical way."""
-
+def list_validator(user_input):
     sort_donors('name')
     report()
+    return 'wait'
 
 
-def input_donation():
-    """ Asks user to input a donation amount.
+def report():
+    print('Name \t\t| Total \t\t| # \t| Average ')
+    print('_____________________________________________________________')
+    for i in range(len(donors)):
+        donors[i].calc_total_and_avg()
+        total = format_currency(donors[i].total)
+        average = format_currency(donors[i].average)
 
-    Returns donation amount in the form of a floating point amount."""
-
-    print()
-    print("Please enter donation amount or 'quit':")
-    donation = input('>')
-    donation = verify_donation(donation)
-    return donation
+        line = "{}\t|{}\t\t|{}\t|{}".format(donors[i].name, total,
+                                            donors[i].numb_of_donations,
+                                            average)
+        print(line)
 
 
-def verify_donation(donation):
+def donation_validator(user_input):
     """ Verifies that a correct donation amount has been entered.
 
     Returns true if it is a valid amount.
@@ -189,81 +151,34 @@ def verify_donation(donation):
         - has more than 2 decimal places."""
 
     main = ['q', 'quit', 'm', 'main', 'menu']
-    if (donation.lower() in main):
-        return 'quit'
+    if (user_input.lower() in main):
+        return 'main'
 
-    elif (not(is_float(donation))):
-        return input_donation()
+    elif (not(is_float(user_input))):
+        return 'donate'
 
     else:
-        donation = float(donation)
+        donation = float(user_input)
         if (donation <= 0):
-            return input_donation()
+            return 'donate'
 
         elif (not(is_currency(donation))):
-            return input_donation()
+            return 'donate'
         else:
-            return donation
+            print(donors[-1].name)
+            donors[-1].add_donation_amount(donation)
+            print(donors[-1].donation_amount)
+            donors[-1].thank_you()
+            return 'wait'
 
 
-def calculate_donations():
-    """Finds the total and average amount of all donations for all donors."""
+def create_donor(donor_name):
+    """ Adds a new donor to the list of donors.
 
-    for i in range(len(donors)):
-        donors[i].calc_total_and_avg()
-
-
-def generate_report():
-    """ Generates a report that lists all donors by donation amount.
-
-    Prints their name, total donations, average donations."""
-
-    sort_donors('total')
-    report()
-
-
-def report():
-    print('Name \t\t| Total \t\t| # \t| Average ')
-    print('_____________________________________________________________')
-    for i in range(len(donors)):
-        total = format_currency(donors[i].total)
-        average = format_currency(donors[i].average)
-
-        line = "{}\t|{}\t\t|{}\t|{}".format(donors[i].name, total,
-                                            donors[i].numb_of_donations,
-                                            average)
-        print(line)
-
-
-def is_float(x):
-    try:
-        float(x)
-        return True
-    except ValueError:
-        return False
-
-
-def is_currency(x):
-    """Checks to see if there is only two decimal places."""
-    if (((x * 1000) % 10) > 0):
-        temp = False
-    else:
-        temp = True
-    return temp
-
-
-def format_currency(numb):
-    return '$' + str('%0.2f' % numb)
-
-
-def wait_for_input():
-    exit = ['exit', 'x', 'ex', 'e', 'q', 'quit']
-    print()
-    x = input('Press Enter to Continue...')
-    if (x in exit):
-        return True
-    else:
-        return False
+    Donor object created.
+    Donation history set to empty."""
+    new_donor = Donor(donor_name)
+    donors.append(new_donor)
 
 
 def import_donors():
@@ -276,15 +191,29 @@ def import_donors():
         finish_import = False
 
     if finish_import:
+        don_numb = 0
         for line in f:
             values = line.split(",")
-            don_numb = get_donor_number(values[0])
-            for i in range(1, len(values)):
+            create_donor(values[0])
+            for i in range(1, len(values) - 1):
                 donors[don_numb].add_donation_amount(float(values[i]))
+            don_numb = don_numb + 1
 
         print('donor.txt found and importted')
+        f.close()
 
-    wait_for_input()
+
+def save_donors():
+    f = open('donor.txt', 'w')
+    for i in range(len(donors)):
+        line = donors[i].name + ', '
+        for donation in donors[i].donation_amount:
+            line = line + str(donation) + ', '
+        line.rstrip(' ')
+        line.rstrip(',')
+        line = line + '\n'
+        f.write(line)
+    f.close()
 
 
 def sort_donors(sort_by):
@@ -297,17 +226,12 @@ def sort_donors(sort_by):
 
 
 class Donor(object):
-    def __init__(self, name, numb):
+    def __init__(self, name):
         self.name = name
-        self.donor_id_numb = numb
         self.donation_amount = []
-        self.parse_name()
 
     def add_donation_amount(self, donation_amount):
         self.donation_amount.append(donation_amount)
-
-    def parse_name(self):
-        self.fname = self.name.split(' ')[0]
 
     def thank_you(self):
         """ Prints a nice thank you letter for the inputted donor.
@@ -329,65 +253,59 @@ class Donor(object):
         except IOError:
             letter = DEFAULT_LETTER
 
-        last_donation = self.donation_amount[len(self.donation_amount) - 1]
+        last_donation = self.donation_amount[- 1]
         last_donation = format_currency(last_donation)
 
         print(letter.format(name=self.name, amount=last_donation))
 
     def calc_total_and_avg(self):
-        self.total = 0
-        for i in range(len(self.donation_amount)):
-            self.total = self.total + self.donation_amount[i]
-
-        self.numb_of_donations = i + 1
+        self.total = sum(self.donation_amount)
+        self.numb_of_donations = len(self.donation_amount)
         self.average = self.total / self.numb_of_donations
 
 
-if __name__ == '__main__':
+def format_currency(numb):
+    return '$' + str('%0.2f' % numb)
+
+
+menus = {'main': MAIN_MENU, 'thankyou': THANKYOU_MENU, 'report': REPORT_HEADER,
+         'list': LIST_HEADER, 'donate': DONATION_AMOUNT, 'wait': WAIT_TEXT}
+validator = {'main': main_validator, 'thankyou': name_validator,
+             'report': report_validator, 'list': list_validator,
+             'donate': donation_validator, 'wait': wait_validator}
+donors = []
+
+
+def is_float(x):
+    try:
+        float(x)
+        return True
+    except ValueError:
+        return False
+
+
+def is_currency(x):
+    """Checks to see if there is only two decimal places."""
+    if (((x * 1000) % 10) > 0):
+        temp = False
+    else:
+        temp = True
+    return temp
+
+
+def repl():
     done = False
 
-    while (not done):
-        clear_screen()
-        print(TITLE)
-
-        initial_input = initial_prompt()
-        if(initial_input == 'x'):
+    current_menu = 'main'
+    while not done:
+        user_input = prompt(current_menu)
+        if user_input == 'quit':
             done = True
-            continue
-        elif(initial_input == 't'):
-            list_names = True
+            break
 
-            # Will loop back to the name prompt if they ask to see the list
-            while (list_names):
-                donor_name = enter_name()
-                if (donor_name == 'l'):
-                    calculate_donations()
-                    list_donors()
-                    done = wait_for_input()
-                else:
-                    list_names = False
-                    # Anything besides l will conmtinue
+        current_menu = user_input
 
-            if (donor_name == 'x'):
-                done = True
-                continue
-            if (donor_name == 'm'):
-                continue
 
-            donation_amount = input_donation()
-            if (donation_amount == 'quit'):
-                continue
-
-            don_numb = get_donor_number(donor_name)
-
-            donors[don_numb].add_donation_amount(donation_amount)
-            donors[don_numb].thank_you()
-            done = wait_for_input()
-
-        elif(initial_input == 'r'):
-            calculate_donations()
-            generate_report()
-            done = wait_for_input()
-
-        elif(initial_input == 'i'):
-            import_donors()
+if __name__ == '__main__':
+    import_donors()
+    repl()
