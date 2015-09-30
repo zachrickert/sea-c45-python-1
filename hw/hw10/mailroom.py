@@ -1,5 +1,5 @@
 import os
-
+import datetime
 
 TITLE = '''
 Welcome to Mailroom Madness
@@ -9,6 +9,7 @@ MAIN_MENU = '''
 Choose from the following:
 T - Send a (T)hank You
 R - Create a (R)eport
+A - Export letters to (A)ll donors
 quit - Quit the Program
 '''
 
@@ -24,6 +25,10 @@ Report Manager
 
 LIST_HEADER = '''
 List Manager
+'''
+
+EXPORT_MENU = '''
+Export leters to all donors? (Y/N)
 '''
 
 DONATION_AMOUNT = '''
@@ -98,6 +103,7 @@ def main_validator(user_input):
     quit = ['exit', 'x', 'quit', 'ex', 'q', 'e']
     letter = ['t', 'thank', 'thank you', 'l', 'letter', 'send']
     report = ['r', 'report', 'c', 'create']
+    export = ['a', 'all', 'export']
 
     if (user_input in quit):
         return 'quit'
@@ -105,6 +111,8 @@ def main_validator(user_input):
         return 'thankyou'
     elif (user_input in report):
         return 'report'
+    elif (user_input in export):
+        return 'export'
     else:
         return prompt('main')
 
@@ -147,6 +155,27 @@ def list_validator(user_input):
     sort_donors('name')
     report()
     return 'wait'
+
+
+def export_validator(user_input):
+    yes = ['y', 'yes']
+    user_input = user_input.lower()
+
+    if user_input in yes:
+        letter = read_letter_template()
+
+        print('Exporting....')
+        for i in range(len(donors)):
+            last_donation = format_currency(donors[i].donation_amount[-1])
+            filename = "letters/" + donors[i].name + '-'
+            filename = filename + str(datetime.date.today()) + '.txt'
+            print(filename)
+            f = open(filename, 'w')
+            f.write(letter.format(name=donors[i].name, amount=last_donation))
+            f.close()
+        return 'wait'
+    else:
+        return 'main'
 
 
 def donation_validator(user_input):
@@ -217,8 +246,6 @@ def save_donors():
         line = donors[i].name + ', '
         for donation in donors[i].donation_amount:
             line = line + str(donation) + ', '
-        line.rstrip(' ')
-        line.rstrip(',')
         line = line + '\n'
         f.write(line)
     f.close()
@@ -231,6 +258,22 @@ def sort_donors(sort_by):
         donors.sort(key=lambda x: x.donor_id_numb, reverse=False)
     else:  # default to name
         donors.sort(key=lambda x: x.name, reverse=False)
+
+
+def read_letter_template():
+    try:
+        f = open("letter_template.txt", 'r')
+        letter = ""
+        for line in f:
+            if(not(line[0] == '#')):
+                letter = letter + line
+
+        f.close()
+
+    except IOError:
+        letter = DEFAULT_LETTER
+
+    return letter
 
 
 class Donor(object):
@@ -249,17 +292,7 @@ class Donor(object):
 
         """
 
-        try:
-            f = open("letter_template.txt", 'r')
-            letter = ""
-            for line in f:
-                if(not(line[0] == '#')):
-                    letter = letter + line
-
-            f.close()
-
-        except IOError:
-            letter = DEFAULT_LETTER
+        letter = read_letter_template()
 
         last_donation = self.donation_amount[- 1]
         last_donation = format_currency(last_donation)
@@ -277,10 +310,12 @@ def format_currency(numb):
 
 
 menus = {'main': MAIN_MENU, 'thankyou': THANKYOU_MENU, 'report': REPORT_HEADER,
-         'list': LIST_HEADER, 'donate': DONATION_AMOUNT, 'wait': WAIT_TEXT}
+         'list': LIST_HEADER, 'donate': DONATION_AMOUNT, 'wait': WAIT_TEXT,
+         'export': EXPORT_MENU}
 validator = {'main': main_validator, 'thankyou': name_validator,
              'report': report_validator, 'list': list_validator,
-             'donate': donation_validator, 'wait': wait_validator}
+             'donate': donation_validator, 'wait': wait_validator,
+             'export': export_validator}
 donors = []
 
 
