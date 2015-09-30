@@ -127,16 +127,18 @@ def list_validator(user_input):
 
 
 def report():
-    print('Name \t\t| Total \t\t| # \t| Average ')
-    print('_____________________________________________________________')
+    line = "{:^30} | {:^10} | {:^3} | {:^10}"
+    line = line.format('Name', 'Total', '#', 'Average')
+    print(line)
+    print('______________________________________________________________')
     for i in range(len(donors)):
         donors[i].calc_total_and_avg()
         total = format_currency(donors[i].total)
         average = format_currency(donors[i].average)
 
-        line = "{}\t|{}\t\t|{}\t|{}".format(donors[i].name, total,
-                                            donors[i].numb_of_donations,
-                                            average)
+        line = "{:<30} | {:>10} | {:>3} | {:>10}"
+        line = line.format(donors[i].name, total,
+                           donors[i].numb_of_donations, average)
         print(line)
 
 
@@ -165,9 +167,7 @@ def donation_validator(user_input):
         elif (not(is_currency(donation))):
             return 'donate'
         else:
-            print(donors[-1].name)
             donors[-1].add_donation_amount(donation)
-            print(donors[-1].donation_amount)
             donors[-1].thank_you()
             return 'wait'
 
