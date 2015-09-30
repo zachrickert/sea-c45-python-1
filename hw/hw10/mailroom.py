@@ -65,6 +65,29 @@ def prompt(menu):
         return reply
 
 
+def report():
+    line = "{:^30} | {:^10} | {:^3} | {:^10}"
+    line = line.format('Name', 'Total', '#', 'Average')
+    print(line)
+    print('______________________________________________________________')
+    for i in range(len(donors)):
+        donors[i].calc_total_and_avg()
+        total = format_currency(donors[i].total)
+        average = format_currency(donors[i].average)
+
+        line = "{:<30} | {:>10} | {:>3} | {:>10}"
+        line = line.format(donors[i].name, total,
+                           donors[i].numb_of_donations, average)
+        print(line)
+
+
+def clean_donor_list(donation_amount):
+    for i in range(len(donors) - 1):
+        if (donors[i].name == donors[-1].name):
+            donors[i].add_donation_amount(donation_amount)
+            donors.pop()
+
+
 def main_validator(user_input):
     """ Reads input and changes user info to specified type
 
@@ -126,22 +149,6 @@ def list_validator(user_input):
     return 'wait'
 
 
-def report():
-    line = "{:^30} | {:^10} | {:^3} | {:^10}"
-    line = line.format('Name', 'Total', '#', 'Average')
-    print(line)
-    print('______________________________________________________________')
-    for i in range(len(donors)):
-        donors[i].calc_total_and_avg()
-        total = format_currency(donors[i].total)
-        average = format_currency(donors[i].average)
-
-        line = "{:<30} | {:>10} | {:>3} | {:>10}"
-        line = line.format(donors[i].name, total,
-                           donors[i].numb_of_donations, average)
-        print(line)
-
-
 def donation_validator(user_input):
     """ Verifies that a correct donation amount has been entered.
 
@@ -169,6 +176,7 @@ def donation_validator(user_input):
         else:
             donors[-1].add_donation_amount(donation)
             donors[-1].thank_you()
+            clean_donor_list(donation)
             return 'wait'
 
 
@@ -309,3 +317,4 @@ def repl():
 if __name__ == '__main__':
     import_donors()
     repl()
+    save_donors()
