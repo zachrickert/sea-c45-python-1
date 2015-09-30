@@ -57,7 +57,11 @@ def clear_screen():
 
 def prompt(menu):
     if (menu != 'quit'):
-        if (menu != 'wait'):
+        if (menu == 'wait' or menu == 'wait2'):
+            clr_screen = False
+        else:
+            clr_screen = True
+        if (clr_screen):
             clear_screen()
             print(TITLE)
         print(menus[menu])
@@ -139,8 +143,17 @@ def wait_validator(user_input):
 
     if user_input in exit:
         return 'quit'
+    else:
+        return 'main'
 
-    return 'main'
+
+def wait2_validator(user_input):
+    exit = ['exit', 'x', 'ex', 'e', 'quit', 'q']
+
+    if user_input in exit:
+        return 'quit'
+    else:
+        return 'thankyou'
 
 
 def report_validator(user_input):
@@ -154,7 +167,7 @@ def report_validator(user_input):
 def list_validator(user_input):
     sort_donors('name')
     report()
-    return 'wait'
+    return 'wait2'
 
 
 def export_validator(user_input):
@@ -311,11 +324,11 @@ def format_currency(numb):
 
 menus = {'main': MAIN_MENU, 'thankyou': THANKYOU_MENU, 'report': REPORT_HEADER,
          'list': LIST_HEADER, 'donate': DONATION_AMOUNT, 'wait': WAIT_TEXT,
-         'export': EXPORT_MENU}
+         'export': EXPORT_MENU, 'wait2': WAIT_TEXT}
 validator = {'main': main_validator, 'thankyou': name_validator,
              'report': report_validator, 'list': list_validator,
              'donate': donation_validator, 'wait': wait_validator,
-             'export': export_validator}
+             'export': export_validator, 'wait2': wait2_validator}
 donors = []
 
 
