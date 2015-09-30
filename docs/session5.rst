@@ -17,6 +17,7 @@ Review/Questions
     .. rst-class:: build
 
         * Dictionaries
+        * String Formatting
         * Exceptions
         * Files, etc.
 
@@ -553,6 +554,24 @@ All the stuff in os.path and more:
     junk2.txt
     junkfile.txt
     ...
+
+Puzzle and Mid-point Activities
+===============================
+
+* Check in attendance.
+* Copy and paste your HW 12 (Dictionary and Files) homework code from
+Interactive Python textbook into Canvas.
+* Puzzle: Fizzbuzz
+
+* Look up the ``%``  operator. What is the value of the following?
+
+  * ``10 % 7 == 3``
+  * ``14 % 7 == 0``
+
+* Write a program that prints the numbers from 1 to 100 inclusive. But for
+  multiples of three print "Fizz" instead of the number and for the multiples
+  of five print "Buzz". For numbers which are multiples of both three and five
+  print "FizzBuzz" instead.
 
 
 Advanced Argument Passing
