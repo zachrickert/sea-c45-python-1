@@ -80,14 +80,7 @@ def report():
     print(line)
     print('______________________________________________________________')
     for i in range(len(donors)):
-        donors[i].calc_total_and_avg()
-        total = format_currency(donors[i].total)
-        average = format_currency(donors[i].average)
-
-        line = "{:<30} | {:>10} | {:>3} | {:>10}"
-        line = line.format(donors[i].name, total,
-                           donors[i].numb_of_donations, average)
-        print(line)
+        print(donors[i])
 
 
 def clean_donor_list(donation_amount):
@@ -157,8 +150,6 @@ def wait2_validator(user_input):
 
 
 def report_validator(user_input):
-    for i in range(len(donors)):
-        donors[i].calc_total_and_avg()
     sort_donors('total')
     report()
     return 'wait'
@@ -294,8 +285,19 @@ class Donor(object):
         self.name = name
         self.donation_amount = []
 
+    def __str__(self):
+        total = format_currency(self.total)
+        numb_of_donations = len(self.donation_amount)
+        average = format_currency(self.total / numb_of_donations)
+
+        line = "{:<30} | {:>10} | {:>3} | {:>10}"
+        line = line.format(self.name, total,
+                           numb_of_donations, average)
+        return line
+
     def add_donation_amount(self, donation_amount):
         self.donation_amount.append(donation_amount)
+        self.total = sum(self.donation_amount)
 
     def thank_you(self):
         """ Prints a nice thank you letter for the inputted donor.
@@ -312,14 +314,10 @@ class Donor(object):
 
         print(letter.format(name=self.name, amount=last_donation))
 
-    def calc_total_and_avg(self):
-        self.total = sum(self.donation_amount)
-        self.numb_of_donations = len(self.donation_amount)
-        self.average = self.total / self.numb_of_donations
-
 
 def format_currency(numb):
-    return '$' + str('%0.2f' % numb)
+    numb = "{:0.2f}".format(numb)
+    return '$' + numb
 
 
 menus = {'main': MAIN_MENU, 'thankyou': THANKYOU_MENU, 'report': REPORT_HEADER,
@@ -362,7 +360,11 @@ def repl():
         current_menu = user_input
 
 
-if __name__ == '__main__':
+def main():
     import_donors()
     repl()
     save_donors()
+
+
+if __name__ == '__main__':
+    main()
