@@ -8,11 +8,6 @@ Python class example.
 # The start of it all:
 # Fill it all in here.
 
-TEXT1 = '''Here is a paragraph of text -- there could be more of them, but this is enough to
-show that we can do some text'''
-
-TEXT2 = '''And here is another piece of text -- you should be able to add any number'''
-
 
 class Element(object):
     def __init__(self, tag=""):
@@ -57,6 +52,11 @@ class Html(Element):
         Element.__init__(self, "html")
 
 
+class Head(Element):
+    def __init__(self):
+        Element.__init__(self, "head")
+
+
 class Body(Element):
     def __init__(self):
         Element.__init__(self, "body")
@@ -67,3 +67,15 @@ class P(Element):
         Element.__init__(self, "p")
         self.line = line
         self.append(line)
+
+
+class Title(Element):
+    def __init__(self, line=""):
+        Element.__init__(self, "title")
+        self.line = line
+        self.append(line)
+
+    def render(self, f, ind=''):
+        tline = "{t}<{tag}>{line}</{tag}>\n"
+        tline = tline.format(t=ind, tag=self.tag, line=self.line)
+        f.write(tline)
