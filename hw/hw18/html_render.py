@@ -7,6 +7,7 @@ Python class example.
 
 # The start of it all:
 # Fill it all in here.
+
 TEXT1 = '''Here is a paragraph of text -- there could be more of them, but this is enough to
 show that we can do some text'''
 
@@ -19,9 +20,10 @@ class Element(object):
         self.contents = []
 
     def append(self, child):
-        child = child.split('\n')
-        for items in child:
-            self.contents.append(items)
+        # child = child.split('\n')
+        # for items in child:
+        #     self.contents.append(items)
+        self.contents.append(child)
 
     def print_to_terminal(self, ind_level):
         tab = '    ' * ind_level
@@ -34,21 +36,34 @@ class Element(object):
         print(closing)
 
     def render(self, f, ind=''):
+        if(self.tag == 'html'):
+            f.write('<!DOCTYPE html>\n')
+
         tab = '    ' + ind
-        opening = "<{tag}>\n".format(tag=self.tag)
-        closing = "</{tag}>\n".format(tag=self.tag)
+        opening = ind + "<{tag}>\n".format(tag=self.tag)
+        closing = ind + "</{tag}>\n".format(tag=self.tag)
         f.write(opening)
         for child in self.contents:
-            child = tab + child + '\n'
-            f.write(child)
+            if (type(child) == str):
+                f.write(tab + child + '\n')
+            else:
+                child.render(f, tab)
+
         f.write(closing)
 
 
-def main():
-    output_file = 'test_html_output1.html'
-    f = open(output_file, 'w')
-    my_web = Element()
-    my_web.append(TEXT1)
-    my_web.append(TEXT2)
+class Html(Element):
+    def __init__(self):
+        Element.__init__(self, "html")
 
-    my_web.render(f, "")
+
+class Body(Element):
+    def __init__(self):
+        Element.__init__(self, "body")
+
+
+class P(Element):
+    def __init__(self, line=""):
+        Element.__init__(self, "p")
+        self.line = line
+        self.append(line)
