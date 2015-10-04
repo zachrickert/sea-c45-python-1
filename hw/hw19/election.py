@@ -88,8 +88,12 @@ def unique_column_values(rows, column_name):
     Given a list of rows and the name of a column (a string),
     returns a set containing all values in that column.
     """
-    #TODO: Implement this function
-    pass
+    my_set = set()
+    for row in rows:
+        my_set.add(row[column_name])
+
+    return my_set
+
 
 def pollster_predictions(poll_rows):
     """
