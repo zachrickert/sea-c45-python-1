@@ -64,16 +64,10 @@ def most_recent_poll_row(poll_rows, pollster, state):
     for row in poll_rows:
         if (row['Pollster'] == pollster and row['State'] == state):
             if (most_recent is None):
-                most_recent = {'ID': row['ID'],
-                               'State': row['State'],
-                               'Pollster': row['Pollster'],
-                               'Date': row['Date']}
+                most_recent = row
             else:
                 if(earlier_date(most_recent['Date'], row['Date'])):
-                    most_recent = {'ID': row['ID'],
-                                   'State': row['State'],
-                                   'Pollster': row['Pollster'],
-                                   'Date': row['Date']}
+                    most_recent = row
 
     return most_recent
 
@@ -100,8 +94,21 @@ def pollster_predictions(poll_rows):
     Given a list of *PollDataRow*s, returns *PollsterPredictions*.
     For a given pollster, uses only the most recent poll for a state.
     """
-    #TODO: Implement this function
-    pass
+
+    pollster_list = unique_column_values(poll_rows, 'Pollster')
+    state_list = unique_column_values(poll_rows, 'State')
+
+    pollster_state_data = {}
+    for pollster in pollster_list:
+        poll_state_edge = {}
+        for state in state_list:
+            a = most_recent_poll_row(poll_rows, pollster, state)
+            if a is not None:
+                poll_state_edge[state] = float(a["Dem"]) - float(a["Rep"])
+
+        pollster_state_data[pollster] = poll_state_edge
+
+    return pollster_state_data
 
 
 ################################################################################
