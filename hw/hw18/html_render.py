@@ -10,7 +10,7 @@ Python class example.
 
 
 class Element(object):
-    def __init__(self, tag=""):
+    def __init__(self, tag="", **kwargs):
         self.tag = tag
         self.contents = []
         self.pre = ''
@@ -26,7 +26,9 @@ class Element(object):
             f.write('\n')
 
         tab = '    ' + ind
-        opening = ind + "<{tag}>\n".format(tag=self.tag)
+        opening = ind + '<{tag}>'
+
+        opening = opening + "\n".format(tag=self.tag)
         closing = ind + "</{tag}>{post}".format(tag=self.tag, post=self.post)
         f.write(opening)
         for child in self.contents:
