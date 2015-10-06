@@ -15,6 +15,8 @@ class Element(object):
         self.contents = []
         self.pre = ''
         self.post = ''
+        self.style = ''
+        self.set_kwargs(kwargs)
 
     def append(self, child):
         self.contents.append(child)
@@ -26,7 +28,15 @@ class Element(object):
             f.write('\n')
 
         tab = '    ' + ind
-        opening = ind + '<{tag}>\n'.format(tag=self.tag)
+        if (self.style != ''):
+            style_text = ' style="{style}"'.format(style=self.style)
+        else:
+            style_text = self.style
+
+        opening = ind + '<{tag}'
+        opening = opening + style_text
+        opening = opening + '>\n'
+        opening = opening.format(tag=self.tag)
         closing = ind + "</{tag}>{post}".format(tag=self.tag, post=self.post)
         f.write(opening)
         for child in self.contents:
@@ -36,6 +46,12 @@ class Element(object):
                 child.render(f, tab)
 
         f.write(closing)
+
+    def set_kwargs(self, kwargs):
+        for key in kwargs:
+            setattr(self, key, kwargs[key])
+            print(key)
+            print(kwargs[key])
 
 
 class Html(Element):
@@ -57,11 +73,12 @@ class Body(Element):
 
 
 class P(Element):
-    def __init__(self, line=""):
+    def __init__(self, line="", **kwargs):
         super(P, self).__init__(tag="p")
         self.line = line
         self.append(line)
         self.post = '\n'
+        super(P, self).set_kwargs(kwargs)
 
 
 class Title(Element):
@@ -76,3 +93,8 @@ class Title(Element):
         tline = tline.format(t=ind, tag=self.tag, line=self.line,
                              end=self.post)
         f.write(tline)
+
+a = P(u"Here is a paragraph of text -- there could be more of them, but this is enough  to show that we can do some text",
+      style=u"text-align: center; font-style: oblique;", ztest="Zach")
+
+print(a)
