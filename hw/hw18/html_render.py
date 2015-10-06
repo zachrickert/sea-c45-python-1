@@ -20,15 +20,13 @@ class Element(object):
         self.contents.append(child)
 
     def render(self, f, ind=''):
-        if(self.tag == 'html'):
-            f.write(self.pre)
+
+        f.write(self.pre)
         if(self.tag == ''):
             f.write('\n')
 
         tab = '    ' + ind
-        opening = ind + '<{tag}>'
-
-        opening = opening + "\n".format(tag=self.tag)
+        opening = ind + '<{tag}>\n'.format(tag=self.tag)
         closing = ind + "</{tag}>{post}".format(tag=self.tag, post=self.post)
         f.write(opening)
         for child in self.contents:
@@ -42,25 +40,25 @@ class Element(object):
 
 class Html(Element):
     def __init__(self):
-        Element.__init__(self, "html")
+        super(Html, self).__init__(tag="html")
         self.pre = '<!DOCTYPE html>\n'
 
 
 class Head(Element):
     def __init__(self):
-        Element.__init__(self, "head")
+        super(Head, self).__init__(tag="head")
         self.post = '\n'
 
 
 class Body(Element):
     def __init__(self):
-        Element.__init__(self, "body")
+        super(Body, self).__init__(tag="body")
         self.post = '\n'
 
 
 class P(Element):
     def __init__(self, line=""):
-        Element.__init__(self, "p")
+        super(P, self).__init__(tag="p")
         self.line = line
         self.append(line)
         self.post = '\n'
