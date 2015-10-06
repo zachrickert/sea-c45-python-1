@@ -94,7 +94,23 @@ class Title(Element):
                              end=self.post)
         f.write(tline)
 
-a = P(u"Here is a paragraph of text -- there could be more of them, but this is enough  to show that we can do some text",
-      style=u"text-align: center; font-style: oblique;", ztest="Zach")
 
-print(a)
+class SelfCloseElement(Element):
+    def __init__(self, tag):
+        super(SelfCloseElement, self).__init__()
+        self.tag = tag
+        self.post = '\n'
+
+    def render(self, f, ind=''):
+        closing = ind + "<{tag} />{post}".format(tag=self.tag, post=self.post)
+        f.write(closing)
+
+
+class Hr(SelfCloseElement):
+    def __init__(self):
+        super(Hr, self).__init__(tag="hr")
+
+
+class Br(SelfCloseElement):
+    def __init__(self):
+        super(Br, self).__init__(tag="br")
