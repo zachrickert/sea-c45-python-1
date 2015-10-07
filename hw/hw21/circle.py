@@ -54,19 +54,11 @@ class Circle(object):
     def get_area(self):
         return math.pi * self.radius ** 2
 
-    def set_area(self, area):
-        if (area < 0):
-            raise ValueError("Circle cannot have negative area.")
-        if (area == 44):
-            raise AttributeError("Your circle can't have an area of 44  :(")
-        self.radius = math.sqrt(area / math.pi)
+    # def set_area(self, area):
+    #     if (area < 0):
+    #         raise ValueError("Circle cannot have negative area.")
+    #     if (area == 44):
+    #         raise AttributeError("Your circle can't have an area of 44  :(")
+    #     self.radius = math.sqrt(area / math.pi)
 
-    area = property(get_area, set_area)
-
-
-c = Circle(3)
-print (c)
-print (c.diameter)
-
-c.area = 10
-print(c)
+    area = property(get_area)
