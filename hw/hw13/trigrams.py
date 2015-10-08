@@ -1,8 +1,8 @@
 import random
 
 
-def open_file(file):
-    file = open("test.txt", 'r')
+def open_file(file_to_open):
+    file = open(file_to_open, 'r')
     return file
 
 
@@ -39,7 +39,9 @@ def pick_next_word(phrase, trigrams):
 
 
 def main():
-    file = open_file("test.txt")
+    file_to_open = "wish.txt"
+    file = open_file(file_to_open)
+
     start_phrase = "I wish"
     trigrams = create_word_dictionary(file)
 
@@ -63,5 +65,5 @@ def main():
 
     file.close()
 
-
-main()
+if __name__ == '__main__':
+    main()
