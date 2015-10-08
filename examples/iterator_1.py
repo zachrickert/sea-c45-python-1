@@ -5,7 +5,7 @@ Simple iterator examples
 """
 
 
-class IterateMe_1(object):
+class IterateMe1(object):
     """
     About as simple an iterator as you can get:
 
@@ -27,7 +27,7 @@ class IterateMe_1(object):
             raise StopIteration
 
 
-class IterateMe_2(object):
+class IterateMe2(object):
     """
     About as simple an iterator as you can get:
 
@@ -51,6 +51,6 @@ class IterateMe_2(object):
 
 if __name__ == "__main__":
 
-    print "first version"
-    for i in IterateMe_1():
-        print i
+    print("first version")
+    for i in IterateMe1():
+        print(i)
