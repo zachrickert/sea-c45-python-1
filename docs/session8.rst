@@ -235,6 +235,20 @@ So in fact the definition should be updated as follows:
 
      "A decorator is a callable that takes a callable as an argument and returns a callable as a return value.""
 
+Intuitively
+----------
+
+Functions are like recipes, little programs that take
+in input (ingredients) and produce an output (food).
+
+Decorators are like recipes for changing recipes
+(meta-recipes). For example, let's say you like garlic,
+and you believe that there is no way to use too much
+garlic.
+You can have a meta-recipe which takes in a normal
+recipe, checks if there is garlic, doubles
+the amount, and then outputs a new recipe.
+
 An Example
 ----------
 
@@ -1047,7 +1061,7 @@ Next Year: 401
 
 February 29th
 
-3 code challenge questions.
+3 code challenge questions, pinned on slack channel.
 
 Main study resources:
 
