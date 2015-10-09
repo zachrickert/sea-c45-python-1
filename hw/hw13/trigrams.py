@@ -16,12 +16,16 @@ def create_word_dictionary(file):
 
     for i in (range(len(words) - 2)):
         phrase = (words[i], words[i + 1])
-        if (phrase in trigrams):
-            trigrams[phrase].append(words[i + 2])
-        else:
-            trigrams[phrase] = [words[i + 2]]
-
+        next_word = words[i + 2]
+        add_trigrams(phrase, next_word, trigrams)
     return trigrams
+
+
+def add_trigrams(phrase, next_word, trigrams):
+    if (phrase in trigrams):
+        trigrams[phrase].append(next_word)
+    else:
+        trigrams[phrase] = [next_word]
 
 
 def phrase_to_tuple(phrase):
@@ -36,6 +40,10 @@ def pick_next_word(phrase, trigrams):
     i = random.randint(0, numb_of_words)
     list_words = trigrams[phrase]
     return list_words[i]
+
+
+def append_word(sentance, word):
+    return sentance + ' ' + word
 
 
 def main():
@@ -56,7 +64,7 @@ def main():
         j = j + 1
         if (phrase in trigrams):
             new_word = pick_next_word(phrase, trigrams)
-            sentance = sentance + " " + new_word
+            sentance = append_word(sentance, new_word)
             phrase = (phrase[1], new_word)
         else:
             done = True
