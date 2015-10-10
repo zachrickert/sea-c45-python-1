@@ -1,0 +1,89 @@
+Name: ...
+CodeFellows Python F2
+SEA-C45
+Homework 8
+
+For each problem that requires a written answer, write (or copy-and-paste)
+your answers in this file.  When you are done, you should have replaced all
+the ellipses (the three dots) with your answers.
+
+At the end, you will turn in this file along with your modified
+dna_analysis.py program.
+
+
+Problem 1:
+
+(No answers in this file.)
+
+Problem 2:
+
+GC-content: 0.430599870611
+
+Problem 3:
+
+When I comment out the seq = “” and linenum = 0, I got a name error on line 38.  On this line we are setting the variable linenum = linenum + 1, but since we commented out the original line of code that assigns linenum to zero the complier cannot resolve this statement.  At this point the variable is not named yet so we get the name error.
+
+If we commented out the line gc_count = 0 we would run into the same name error issue when python would try to execute the line to increment that variable (line 64).
+
+
+Problem 4:
+
+GC-content: 0.430599870611
+AT-content: 0.569400129389
+
+Problem 5:
+
+GC-content: 0.430599870611
+AT-content: 0.569400129389
+
+G-count: 5738773
+C-count: 5879128
+A-count: 7701287
+T-count: 7661547
+
+Problem 6:
+
+***data/sample_5.fastq***
+GC-content: 0.266666666667
+AT-content: 0.733333333333
+
+G-count: 11
+C-count: 9
+A-count: 27
+T-count: 28
+
+---Data Checking---
+G + C + A + T    75
+Total Count      75
+Sequence Length  76
+
+I ran a few files through the dna_analysis program.  The result were similar on each file, where adding the G, C, A & T base pairs gave a different result than the total count or the sequence length (both of the later methods giving the same result.)  Another issue that I noticed was that the GC-Content and the AT-content values did not add up to 1.  That caused me to think that there might be data that was not G, C, A or T.  I edited the program to output any base pair that wasn't one of the four letters.  Once I ran this, the program outputted a bunch of Ns.  Then on visual inspection of the data I did find Ns scattered through the data.  For each N in the data it both the total count of base pairs and the sequence length would be incremented, while the sum of the four base pairs would not get incremented.
+
+As a denominator we should use the sum of G, C, A & T and not the total count of base pairs or the sequence length.  The Ns are bad data points and should be removed from the data.
+
+My program was using the incorrect formula, so I editted the program to give the correct results.  I have gone back and appended my results from problems 2, 4, 5 & 6.
+
+GC-content: 0.43029262963 - bad formula
+GC-content: 0.430599870611 - correct formula
+
+AT-content: 0.568993851852 - bad formula
+AT-content: 0.569400129389 - correct formula
+
+
+Problem 7:
+
+AT/GC ratio: 1.32234161747
+
+Problem 8:
+
+GC Classification:  moderate GC content
+
+Collaboration:
+
+No help
+
+Reflection:
+
+In this exercise I learned to be pretty wary of data.    Under the assumption that our data would only contain Gs, Cs, As & Ts, our original code would have come up with the correct GC-content ratio.   However,  under closer inspection the data was not completely clean and our method for calculating the GC-content was slightly flawed.
+
+In the future, I will assume that the data is not perfectly clean and that I should write code to find / track any discrepancies between expected data values and actual data values.  Also checking multiple files or running the code on a file with known output helps in finding errors.  When we ran the code on the test-small file everything seemed to be working fine.  When we ran it the original code with the larger data files, then systemic errors started to show up in out numbers.
